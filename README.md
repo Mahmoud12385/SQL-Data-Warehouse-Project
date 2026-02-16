@@ -43,4 +43,4 @@ Sales trends
 Hi, I'm Mahmoud, an aspiring Data Analyst passionate about turning data into insights.  
 I’m focused on SQL, data analysis, and building projects that showcase analytical skills and business insights.  
 
-Feel free to connect with me on [LinkedIn](www.linkedin.com/in/mahmoud-youseif).
+Feel free to connect with me on linkedIN (www.linkedin.com/in/mahmoud-youseif).
