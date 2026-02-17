@@ -45,14 +45,11 @@ BEGIN
         WITH (
             FIRSTROW = 2,
             FIELDTERMINATOR = ',',
-            ROWTERMINATOR = '0x0a',
             TABLOCK,
             KEEPNULLS
         );
         SET @end_time = GETDATE();
-        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)/3600) + 'h ' +
-                        CONVERT(VARCHAR, (DATEDIFF(SECOND, @start_time, @end_time)%3600)/60) + 'm ' +
-                        CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)%60) + 's';
+        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
         PRINT '>>> Completed: bronze.crm_cust_info | Duration: ' + @duration;
         PRINT '----------------------------------------------------';
 
@@ -67,15 +64,28 @@ BEGIN
         WITH (
             FIRSTROW = 2,
             FIELDTERMINATOR = ',',
-            ROWTERMINATOR = '0x0a',
             TABLOCK,
             KEEPNULLS
         );
         SET @end_time = GETDATE();
-        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)/3600) + 'h ' +
-                        CONVERT(VARCHAR, (DATEDIFF(SECOND, @start_time, @end_time)%3600)/60) + 'm ' +
-                        CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)%60) + 's';
+        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
         PRINT '>>> Completed: bronze.crm_sales_details | Duration: ' + @duration;
+
+        -- CRM Product info
+        PRINT '>>> Truncating table: bronze.crm_prd_info';
+        TRUNCATE TABLE bronze.crm_prd_info;
+
+        SET @start_time = GETDATE();
+        BULK INSERT bronze.crm_prd_info
+        FROM 'F:\learn sql\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+        WITH (
+            FIRSTROW = 2,
+            FIELDTERMINATOR = ',',
+            TABLOCK
+        );
+        SET @end_time = GETDATE();
+        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
+        PRINT '>>> Completed: bronze.crm_prd_info | Duration: ' + @duration;
         PRINT '====================================================';
         PRINT '             CRM DATA LOAD COMPLETED               ';
         PRINT '====================================================';
@@ -99,14 +109,11 @@ BEGIN
         WITH (
             FIRSTROW = 2,
             FIELDTERMINATOR = ',',
-            ROWTERMINATOR = '0x0a',
             TABLOCK,
             KEEPNULLS
         );
         SET @end_time = GETDATE();
-        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)/3600) + 'h ' +
-                        CONVERT(VARCHAR, (DATEDIFF(SECOND, @start_time, @end_time)%3600)/60) + 'm ' +
-                        CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)%60) + 's';
+        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
         PRINT '>>> Completed: bronze.erp_loc_a101 | Duration: ' + @duration;
         PRINT '----------------------------------------------------';
 
@@ -121,14 +128,11 @@ BEGIN
         WITH (
             FIRSTROW = 2,
             FIELDTERMINATOR = ',',
-            ROWTERMINATOR = '0x0a',
             TABLOCK,
             KEEPNULLS
         );
         SET @end_time = GETDATE();
-        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)/3600) + 'h ' +
-                        CONVERT(VARCHAR, (DATEDIFF(SECOND, @start_time, @end_time)%3600)/60) + 'm ' +
-                        CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)%60) + 's';
+        SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
         PRINT '>>> Completed: bronze.erp_cust_az12 | Duration: ' + @duration;
         PRINT '----------------------------------------------------';
 
@@ -143,7 +147,6 @@ BEGIN
         WITH (
             FIRSTROW = 2,
             FIELDTERMINATOR = ',',
-            ROWTERMINATOR = '0x0a',
             TABLOCK,
             KEEPNULLS
         );
@@ -151,15 +154,14 @@ BEGIN
         SET @batch_end_time = GETDATE();
 
         SET @duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @start_time, @end_time)) + 's';
-
         SET @batch_duration = CONVERT(VARCHAR, DATEDIFF(SECOND, @batch_start_time, @batch_end_time)) + 's';
+
         PRINT '>>> Completed: bronze.erp_px_cat_g1v2 | Duration: ' + @duration;
-        PRINT ''
+        PRINT '';
         PRINT '====================================================';
         PRINT '             ERP DATA LOAD COMPLETED               ';
         PRINT '====================================================';
         PRINT 'Total Loading Duration: ' + @batch_duration;
-
 
     END TRY
     BEGIN CATCH
