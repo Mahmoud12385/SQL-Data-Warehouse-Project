@@ -191,9 +191,29 @@ BEGIN
             sls_cust_id,
 
             -- Convert YYYYMMDD integer to DATE
-            TRY_CONVERT(DATE, CAST(sls_order_dt AS CHAR(8)), 112),
-            TRY_CONVERT(DATE, CAST(sls_ship_dt  AS CHAR(8)), 112),
-            TRY_CONVERT(DATE, CAST(sls_due_dt   AS CHAR(8)), 112),
+    -- Keep only realistic order date
+    CASE
+        WHEN TRY_CONVERT(DATE, CAST(sls_order_dt AS CHAR(8)), 112)
+             BETWEEN '1900-01-01' AND GETDATE()
+        THEN TRY_CONVERT(DATE, CAST(sls_order_dt AS CHAR(8)), 112)
+        ELSE NULL
+    END AS sls_order_dt,
+
+    -- Keep only realistic ship date
+    CASE
+        WHEN TRY_CONVERT(DATE, CAST(sls_ship_dt AS CHAR(8)), 112)
+             BETWEEN '1900-01-01' AND GETDATE()
+        THEN TRY_CONVERT(DATE, CAST(sls_ship_dt AS CHAR(8)), 112)
+        ELSE NULL
+    END AS sls_ship_dt,
+
+    -- Keep only realistic due date
+    CASE
+        WHEN TRY_CONVERT(DATE, CAST(sls_due_dt AS CHAR(8)), 112)
+             BETWEEN '1900-01-01' AND GETDATE()
+        THEN TRY_CONVERT(DATE, CAST(sls_due_dt AS CHAR(8)), 112)
+        ELSE NULL
+    END AS sls_due_dt,
 
             -- Recalculate invalid sales values
             CASE 
