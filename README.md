@@ -6,7 +6,12 @@ This project demonstrates building a data warehouse using SQL Server and develop
 
 🏗️ Data Architecture
 
-The project follows the Medallion Architecture approach:
+## 🚀 High‑Level Architecture
+
+Here’s the architecture diagram for the Gold Layer and overall data flow:
+
+![High Level Architecture](https://github.com/Mahmoud12385/SQL-Data-Warehouse-Project/blob/main/docs/High_level_architecture.png?raw=true)
+
 
 🥉 Bronze Layer – Raw data loaded from CSV files
 
